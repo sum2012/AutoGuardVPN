@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 基础颜色 -->
+    <color name="primary">#3B82F6</color>
+    <color name="primary_dark">#2563EB</color>
+    <color name="primary_light">#60A5FA</color>
+
+    <!-- 状态颜色 -->
+    <color name="connected">#22C55E</color>
+    <color name="connecting">#F59E0B</color>
+    <color name="disconnected">#94A3B8</color>
+    <color name="error">#EF4444</color>
+
+    <!-- 深色主题 -->
+    <color name="dark_background">#0F172A</color>
+    <color name="dark_surface">#1E293B</color>
+    <color name="dark_surface_variant">#334155</color>
+
+    <!-- 浅色主题 -->
+    <color name="light_background">#F8FAFC</color>
+    <color name="light_surface">#FFFFFF</color>
+    <color name="light_surface_variant">#E2E8F0</color>
+
+    <!-- 文字颜色 -->
+    <color name="text_primary_dark">#F1F5F9</color>
+    <color name="text_secondary_dark">#94A3B8</color>
+    <color name="text_primary_light">#0F172A</color>
+    <color name="text_secondary_light">#64748B</color>
+
+    <!-- 渐变色 -->
+    <color name="gradient_start">#3B82F6</color>
+    <color name="gradient_end">#8B5CF6</color>
+    <color name="gradient_connected_start">#22C55E</color>
+    <color name="gradient_connected_end">#10B981</color>
+
+    <!-- 其他颜色 -->
+    <color name="divider">#334155</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+</resources>

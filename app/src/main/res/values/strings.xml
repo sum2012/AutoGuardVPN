@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application Name -->
+    <string name="app_name">AutoGuard VPN</string>
+
+    <!-- Connection Status -->
+    <string name="status_connected">Connected</string>
+    <string name="status_connecting">Connecting...</string>
+    <string name="status_disconnecting">Disconnecting...</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="status_error">Connection Error</string>
+
+    <!-- Action Buttons -->
+    <string name="action_connect">Connect</string>
+    <string name="action_disconnect">Disconnect</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
+
+    <!-- Server Related -->
+    <string name="server_select_title">Select Server</string>
+    <string name="server_search_hint">Search country, city or address...</string>
+    <string name="server_loading">Loading server list...</string>
+    <string name="server_empty">No available servers</string>
+    <string name="server_error">Failed to fetch server list</string>
+    <string name="server_count">%d servers</string>
+    <string name="server_best">Best</string>
+
+    <!-- Settings Related -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_connection">Connection Settings</string>
+    <string name="settings_kill_switch">Kill Switch</string>
+    <string name="settings_kill_switch_desc">Automatically block network access when VPN is disconnected</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_dark_mode_desc">Use dark theme</string>
+    <string name="settings_server">Server Configuration</string>
+    <string name="settings_api_url">Server API URL</string>
+    <string name="settings_api_url_desc">Custom server list API URL</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version</string>
+
+    <!-- Permission Related -->
+    <string name="permission_vpn_title">VPN Permission</string>
+    <string name="permission_vpn_message">AutoGuard VPN needs system permission to create a VPN connection. Please allow this request to use VPN features.</string>
+    <string name="permission_notification_title">Notification Permission</string>
+    <string name="permission_notification_message">AutoGuard VPN needs notification permission to show connection status. Please allow notifications for the best experience.</string>
+
+    <!-- Latency Indicators -->
+    <string name="latency_ms">%dms</string>
+    <string name="latency_excellent">Excellent</string>
+    <string name="latency_good">Good</string>
+    <string name="latency_average">Average</string>
+    <string name="latency_poor">Poor</string>
+
+    <!-- Error Messages -->
+    <string name="error_network">Network connection failed, please check network settings</string>
+    <string name="error_vpn_permission">VPN permission denied, cannot establish connection</string>
+    <string name="error_server_unavailable">Server temporarily unavailable, please try again later</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">VPN Status</string>
+    <string name="notification_channel_desc">Shows VPN connection status notifications</string>
+    <string name="notification_connecting">Connecting to %s...</string>
+    <string name="notification_connected">Connected to %s</string>
+    <string name="notification_disconnected">VPN disconnected</string>
+    <string name="notification_action_disconnect">Disconnect</string>
+</resources>
