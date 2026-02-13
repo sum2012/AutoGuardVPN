@@ -59,9 +59,6 @@ class MainActivity : ComponentActivity() {
 
         // Check and request necessary permissions
         checkAndRequestPermissions()
-        
-        // Request ignore battery optimizations
-        requestIgnoreBatteryOptimizations()
 
         setContent {
             val windowSizeClass = calculateWindowSizeClass(this)
@@ -139,27 +136,6 @@ class MainActivity : ComponentActivity() {
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
-
-    /**
-     * Request to ignore battery optimizations to ensure background VPN doesn't disconnect
-     */
-    private fun requestIgnoreBatteryOptimizations() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                try {
-                    val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                        data = Uri.parse("package:$packageName")
-                    }
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    // Some devices might not support direct jumping, fallback to settings list
-                    val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-                    startActivity(intent)
-                }
             }
         }
     }
