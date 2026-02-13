@@ -35,11 +35,14 @@
     <string name="settings_appearance">Appearance</string>
     <string name="settings_dark_mode">Dark Mode</string>
     <string name="settings_dark_mode_desc">Use dark theme</string>
+    <string name="settings_language">Language</string>
     <string name="settings_server">Server Configuration</string>
     <string name="settings_api_url">Server API URL</string>
     <string name="settings_api_url_desc">Custom server list API URL</string>
+    <string name="settings_data_source">Data Source</string>
     <string name="settings_about">About</string>
     <string name="settings_version">Version</string>
+    <string name="settings_source">Source</string>
 
     <!-- Permission Related -->
     <string name="permission_vpn_title">VPN Permission</string>
@@ -66,4 +69,11 @@
     <string name="notification_connected">Connected to %s</string>
     <string name="notification_disconnected">VPN disconnected</string>
     <string name="notification_action_disconnect">Disconnect</string>
+
+    <!-- Language Selection -->
+    <string name="language_select_title">Select Language</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese_simplified">简体中文</string>
+    <string name="language_chinese_traditional">繁體中文</string>
+    <string name="language_confirm">Confirm</string>
 </resources>

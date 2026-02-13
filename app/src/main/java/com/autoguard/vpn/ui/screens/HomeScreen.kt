@@ -1,5 +1,6 @@
 package com.autoguard.vpn.ui.screens
 
+import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -9,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,24 +29,30 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.autoguard.vpn.R
 import com.autoguard.vpn.data.model.VpnConnectionState
 import com.autoguard.vpn.ui.components.ConnectButton
+import com.autoguard.vpn.ui.components.LanguageSelectionDialog
 import com.autoguard.vpn.ui.components.ServerCard
 import com.autoguard.vpn.ui.theme.ConnectedGreen
 import com.autoguard.vpn.ui.theme.ConnectingYellow
 import com.autoguard.vpn.ui.theme.DisconnectedGray
 import com.autoguard.vpn.ui.theme.ErrorRed
-import com.autoguard.vpn.ui.theme.GradientEnd
-import com.autoguard.vpn.ui.theme.GradientStart
 import com.autoguard.vpn.ui.viewmodel.MainViewModel
 
 /**
@@ -70,13 +75,43 @@ fun HomeScreen(
     val selectedServer by viewModel.selectedServer.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val currentLanguage by viewModel.language.collectAsState(initial = "initial")
+    val context = LocalContext.current
+
+    var showInitLanguageDialog by remember { mutableStateOf(false) }
+
+    // Use LaunchedEffect to determine if we should show the initial dialog
+    LaunchedEffect(currentLanguage) {
+        if (currentLanguage == "") {
+            showInitLanguageDialog = true
+        }
+    }
+
+    // Show language selection on first run if language is not set
+    if (showInitLanguageDialog) {
+        LanguageSelectionDialog(
+            currentLanguage = "",
+            onLanguageSelected = { 
+                viewModel.setLanguage(it)
+                showInitLanguageDialog = false
+                // Force recreate activity to apply language changes immediately
+                (context as? Activity)?.recreate()
+            },
+            onDismiss = { 
+                // Force English as default if dismissed without selection
+                viewModel.setLanguage("en")
+                showInitLanguageDialog = false
+                (context as? Activity)?.recreate()
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "AutoGuard VPN",
+                        text = stringResource(R.string.app_name),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -96,7 +131,7 @@ fun HomeScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = "Refresh Server List"
+                                contentDescription = stringResource(R.string.action_refresh)
                             )
                         }
                     }
@@ -105,7 +140,7 @@ fun HomeScreen(
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "Settings"
+                            contentDescription = stringResource(R.string.action_settings)
                         )
                     }
                 },
@@ -197,11 +232,11 @@ private fun ConnectionStatusSection(
     ) {
         // Status Text
         val statusText = when (connectionState) {
-            VpnConnectionState.CONNECTED -> "Connected"
-            VpnConnectionState.CONNECTING -> "Connecting..."
-            VpnConnectionState.DISCONNECTING -> "Disconnecting..."
-            VpnConnectionState.ERROR -> "Connection Failed"
-            VpnConnectionState.DISCONNECTED -> "Not Connected"
+            VpnConnectionState.CONNECTED -> stringResource(R.string.status_connected)
+            VpnConnectionState.CONNECTING -> stringResource(R.string.status_connecting)
+            VpnConnectionState.DISCONNECTING -> stringResource(R.string.status_disconnecting)
+            VpnConnectionState.ERROR -> stringResource(R.string.status_error)
+            VpnConnectionState.DISCONNECTED -> stringResource(R.string.status_disconnected)
         }
 
         val statusColor = when (connectionState) {
@@ -231,13 +266,13 @@ private fun ConnectionStatusSection(
             )
         } else if (connectionState == VpnConnectionState.CONNECTING) {
             Text(
-                text = "Establishing secure connection...",
+                text = stringResource(R.string.status_connecting),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         } else {
             Text(
-                text = "Tap to connect VPN",
+                text = stringResource(R.string.action_connect),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -262,9 +297,9 @@ private fun ServerSelectionSection(
         ServerCard(
             server = selectedServer ?: com.autoguard.vpn.data.model.VpnServer(
                 id = "default",
-                name = "Select Server",
+                name = stringResource(R.string.server_select_title),
                 country = "🌐",
-                city = "Select Server",
+                city = stringResource(R.string.server_select_title),
                 endpoint = "",
                 publicKey = "",
                 allowedIps = "0.0.0.0/0",

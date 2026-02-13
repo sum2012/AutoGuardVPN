@@ -52,10 +52,12 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.autoguard.vpn.R
 import com.autoguard.vpn.data.model.VpnServer
 import com.autoguard.vpn.ui.components.CountryHeader
 import com.autoguard.vpn.ui.components.ServerCard
@@ -107,7 +109,7 @@ fun ServerListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Select Server",
+                        text = stringResource(R.string.server_select_title),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -184,7 +186,7 @@ private fun SearchBar(
         modifier = modifier,
         placeholder = {
             Text(
-                text = "Search country, city or address...",
+                text = stringResource(R.string.server_search_hint),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },
@@ -303,7 +305,7 @@ private fun LoadingContent() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Loading server list...",
+                text = stringResource(R.string.server_loading),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -352,7 +354,7 @@ private fun EmptyContent() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "No available servers",
+            text = stringResource(R.string.server_empty),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

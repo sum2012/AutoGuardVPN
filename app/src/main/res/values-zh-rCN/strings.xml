@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Application Name -->
+    <string name="app_name">AutoGuard VPN</string>
+
+    <!-- Connection Status -->
+    <string name="status_connected">已连接</string>
+    <string name="status_connecting">正在连接...</string>
+    <string name="status_disconnecting">正在断开连接...</string>
+    <string name="status_disconnected">已断开</string>
+    <string name="status_error">连接错误</string>
+
+    <!-- Action Buttons -->
+    <string name="action_connect">连接</string>
+    <string name="action_disconnect">断开连接</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_retry">重试</string>
+    <string name="action_settings">设置</string>
+    <string name="action_refresh">刷新</string>
+
+    <!-- Server Related -->
+    <string name="server_select_title">选择服务器</string>
+    <string name="server_search_hint">搜索国家、城市或地址...</string>
+    <string name="server_loading">正在加载服务器列表...</string>
+    <string name="server_empty">无可用服务器</string>
+    <string name="server_error">获取服务器列表失败</string>
+    <string name="server_count">%d 个服务器</string>
+    <string name="server_best">最佳</string>
+
+    <!-- Settings Related -->
+    <string name="settings_title">设置</string>
+    <string name="settings_connection">连接设置</string>
+    <string name="settings_kill_switch">断网保护</string>
+    <string name="settings_kill_switch_desc">当 VPN 断开时自动阻止网络访问</string>
+    <string name="settings_appearance">外观</string>
+    <string name="settings_dark_mode">深色模式</string>
+    <string name="settings_dark_mode_desc">使用深色主题</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_server">服务器配置</string>
+    <string name="settings_api_url">服务器 API 地址</string>
+    <string name="settings_api_url_desc">自定义服务器列表 API 地址</string>
+    <string name="settings_data_source">数据来源</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_version">版本</string>
+    <string name="settings_source">来源</string>
+
+    <!-- Permission Related -->
+    <string name="permission_vpn_title">VPN 权限</string>
+    <string name="permission_vpn_message">AutoGuard VPN 需要系统权限来创建 VPN 连接。请允许此请求以使用 VPN 功能。</string>
+    <string name="permission_notification_title">通知权限</string>
+    <string name="permission_notification_message">AutoGuard VPN 需要通知权限以显示连接状态。请允许通知以获得最佳体验。</string>
+
+    <!-- Latency Indicators -->
+    <string name="latency_ms">%dms</string>
+    <string name="latency_excellent">极佳</string>
+    <string name="latency_good">良好</string>
+    <string name="latency_average">普通</string>
+    <string name="latency_poor">较差</string>
+
+    <!-- Error Messages -->
+    <string name="error_network">网络连接失败，请检查网络设置</string>
+    <string name="error_vpn_permission">VPN 权限被拒绝，无法建立连接</string>
+    <string name="error_server_unavailable">服务器暂时不可用，请稍后再试</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">VPN 状态</string>
+    <string name="notification_channel_desc">显示 VPN 连接状态通知</string>
+    <string name="notification_connecting">正在连接到 %s...</string>
+    <string name="notification_connected">已连接到 %s</string>
+    <string name="notification_disconnected">VPN 已断开</string>
+    <string name="notification_action_disconnect">断开连接</string>
+
+    <!-- Language Selection -->
+    <string name="language_select_title">选择语言</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese_simplified">简体中文</string>
+    <string name="language_chinese_traditional">繁體中文</string>
+    <string name="language_confirm">确认</string>
+</resources>
