@@ -16,6 +16,7 @@ The program is created by MiniMax agent. Compilation fix by Google Gemini 1.5 Pr
 - **Latency Display**: Shows connection latency for each server
 - **Connection Status**: Real-time display of VPN connection status
 - **Settings Options**: Supports Kill Switch, etc.
+- **Multi-language Support**: Supports English, Simplified Chinese, and Traditional Chinese.
 
 ## Tech Stack
 
@@ -72,7 +73,7 @@ VPN Gate servers use common connection credentials:
 ### Server Filtering
 
 The application automatically filters high-quality servers:
-- Servers with a score >= 10,000
+- Servers with a score >= 1,000 (Adjusted for better coverage)
 - Servers supporting the OpenVPN protocol
 - Sorted by score and latency
 
@@ -84,18 +85,23 @@ app/
 │   ├── java/com/autoguard/vpn/
 │   │   ├── data/
 │   │   │   ├── api/          # API Interfaces (ServerApiService, VpnGateApiService)
-│   │   │   ├── model/        # Data Models (VpnServer, VpnGateServer)
+│   │   │   ├── model/        # Data Models & Parsers (VpnServer, VpnGateServer, VpnGateCsvParser)
 │   │   │   └── repository/   # Data Repositories (ServerRepository)
 │   │   ├── di/               # Dependency Injection (AppModule, Qualifiers, StringConverterFactory)
 │   │   ├── service/          # VPN Service (AutoGuardVpnService)
 │   │   ├── ui/
 │   │   │   ├── components/   # UI Components (ConnectButton, ServerCard)
-│   │   │   ├── screens/      # Screens (HomeScreen, ServerListScreen, SettingsScreen)
+│   │   │   ├── screens/      # Screens (Home, ServerList, Settings, LanguageSelection)
 │   │   │   ├── theme/        # Themes (Color, Shape, Theme, Type)
 │   │   │   ├── viewmodel/    # ViewModel (MainViewModel)
 │   │   │   └── MainActivity.kt
 │   │   └── AutoGuardApplication.kt
-│   └── res/                  # Resources
+│   ├── assets/               # Local data (servers.json)
+│   └── res/                  # Resources & Localization
+│       ├── values/           # Default strings (English)
+│       ├── values-zh-rCN/    # Simplified Chinese strings
+│       ├── values-zh-rTW/    # Traditional Chinese strings
+│       └── xml/              # Network security & service configs
 └── build.gradle.kts          # Build Configuration
 ```
 
