@@ -3,32 +3,23 @@ package com.autoguard.vpn.ui.screens
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.autoguard.vpn.R
 import com.autoguard.vpn.ui.viewmodel.MainViewModel
 
 /**
@@ -46,17 +37,20 @@ fun SettingsScreen(
 ) {
     val killSwitchEnabled by viewModel.killSwitchEnabled.collectAsState()
     val dataSourceType by viewModel.dataSourceType.collectAsState()
+    val appLanguage by viewModel.appLanguage.collectAsState()
     val context = LocalContext.current
+    
+    var showLanguageDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Settings") },
+                title = { Text(stringResource(R.string.settings_title)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.action_cancel)
                         )
                     }
                 }
@@ -70,31 +64,44 @@ fun SettingsScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             // VPN Settings Category
-            CategoryHeader(text = "VPN Settings")
+            CategoryHeader(text = stringResource(R.string.settings_connection))
 
             // Kill Switch
             SettingsSwitchItem(
-                title = "Kill Switch",
-                subtitle = "Block internet if VPN disconnects",
+                title = stringResource(R.string.settings_kill_switch),
+                subtitle = stringResource(R.string.settings_kill_switch_desc),
                 checked = killSwitchEnabled,
                 onCheckedChange = { viewModel.setKillSwitchEnabled(it) }
             )
 
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
+            // Language Selection
+            SettingsInfoItem(
+                title = stringResource(R.string.settings_language),
+                value = when (appLanguage) {
+                    "zh-rTW" -> stringResource(R.string.language_tchinese)
+                    "zh-rCN" -> stringResource(R.string.language_schinese)
+                    else -> stringResource(R.string.language_english)
+                },
+                onClick = { showLanguageDialog = true }
+            )
+
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+
             // Data Source info
             SettingsInfoItem(
-                title = "Data Source",
+                title = stringResource(R.string.settings_server),
                 value = dataSourceType.name
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             // App Category
-            CategoryHeader(text = "App Info")
+            CategoryHeader(text = stringResource(R.string.settings_about))
 
             SettingsInfoItem(
-                title = "Version",
+                title = stringResource(R.string.settings_version),
                 value = "1.0.0"
             )
 
@@ -110,6 +117,68 @@ fun SettingsScreen(
             )
         }
     }
+
+    if (showLanguageDialog) {
+        LanguageDialog(
+            currentLanguage = appLanguage,
+            onDismiss = { showLanguageDialog = false },
+            onLanguageSelected = { 
+                viewModel.setLanguage(it)
+                showLanguageDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun LanguageDialog(
+    currentLanguage: String,
+    onDismiss: () -> Unit,
+    onLanguageSelected: (String) -> Unit
+) {
+    val languages = listOf(
+        LanguageOption("en", stringResource(R.string.language_english)),
+        LanguageOption("zh-rTW", stringResource(R.string.language_tchinese)),
+        LanguageOption("zh-rCN", stringResource(R.string.language_schinese))
+    )
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.settings_language)) },
+        text = {
+            Column(Modifier.selectableGroup()) {
+                languages.forEach { language ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .selectable(
+                                selected = (language.code == currentLanguage),
+                                onClick = { onLanguageSelected(language.code) },
+                                role = Role.RadioButton
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (language.code == currentLanguage),
+                            onClick = null
+                        )
+                        Text(
+                            text = language.name,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.action_cancel))
+            }
+        }
+    )
 }
 
 @Composable

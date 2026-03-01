@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 應用程式名稱 -->
+    <string name="app_name">AutoGuard VPN</string>
+
+    <!-- 連線狀態 -->
+    <string name="status_connected">已連線</string>
+    <string name="status_connecting">連線中...</string>
+    <string name="status_disconnecting">斷開連線中...</string>
+    <string name="status_disconnected">已斷開</string>
+    <string name="status_error">連線錯誤</string>
+
+    <!-- 首頁狀態 -->
+    <string name="home_status_not_connected">未連線</string>
+    <string name="home_status_failed">連線失敗</string>
+    <string name="home_info_connecting">正在建立加密連線...</string>
+    <string name="home_info_tap_to_connect">點擊連線 VPN</string>
+
+    <!-- 操作按鈕 -->
+    <string name="action_connect">連線</string>
+    <string name="action_disconnect">斷開連線</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_retry">重試</string>
+    <string name="action_settings">設定</string>
+    <string name="action_refresh">重新整理</string>
+    <string name="action_back">返回</string>
+    <string name="action_search">搜尋</string>
+
+    <!-- 伺服器相關 -->
+    <string name="server_select_title">選擇伺服器</string>
+    <string name="server_search_hint">搜尋國家、城市或地址...</string>
+    <string name="server_loading">正在載入伺服器列表...</string>
+    <string name="server_empty">無可用伺服器</string>
+    <string name="server_error">無法獲取伺服器列表</string>
+    <string name="server_count">%d 個伺服器</string>
+    <string name="server_best">最佳</string>
+    <string name="server_throughput">吞吐量</string>
+    <string name="server_sessions">會話</string>
+    <string name="server_latency">延遲</string>
+    <string name="server_throughput_unit">Mbps</string>
+
+    <!-- 設定相關 -->
+    <string name="settings_title">設定</string>
+    <string name="settings_connection">連線設定</string>
+    <string name="settings_kill_switch">終止開關 (Kill Switch)</string>
+    <string name="settings_kill_switch_desc">當 VPN 斷開時自動阻斷網路存取</string>
+    <string name="settings_appearance">外觀</string>
+    <string name="settings_dark_mode">深色模式</string>
+    <string name="settings_dark_mode_desc">使用深色主題</string>
+    <string name="settings_language">語言</string>
+    <string name="settings_server">伺服器配置</string>
+    <string name="settings_api_url">伺服器 API 網址</string>
+    <string name="settings_api_url_desc">自定義伺服器列表 API 網址</string>
+    <string name="settings_about">關於</string>
+    <string name="settings_version">版本</string>
+
+    <!-- 權限相關 -->
+    <string name="permission_vpn_title">VPN 權限</string>
+    <string name="permission_vpn_message">AutoGuard VPN 需要系統權限來建立 VPN 連線。請允許此請求以使用 VPN 功能。</string>
+    <string name="permission_notification_title">通知權限</string>
+    <string name="permission_notification_message">AutoGuard VPN 需要通知權限來顯示連線狀態。請允許通知以獲得最佳體驗。</string>
+
+    <!-- 延遲指示 -->
+    <string name="latency_ms">%dms</string>
+    <string name="latency_excellent">極佳</string>
+    <string name="latency_good">良好</string>
+    <string name="latency_average">普通</string>
+    <string name="latency_poor">較差</string>
+
+    <!-- 錯誤訊息 -->
+    <string name="error_network">網路連線失敗，請檢查網路設定</string>
+    <string name="error_vpn_permission">VPN 權限被拒絕，無法建立連線</string>
+    <string name="error_server_unavailable">伺服器暫時不可用，請稍後再試</string>
+
+    <!-- 通知 -->
+    <string name="notification_channel_name">VPN 狀態</string>
+    <string name="notification_channel_desc">顯示 VPN 連線狀態通知</string>
+    <string name="notification_connecting">正在連線至 %s...</string>
+    <string name="notification_connected">已連線至 %s</string>
+    <string name="notification_disconnected">VPN 已斷開</string>
+    <string name="notification_action_disconnect">斷開連線</string>
+
+    <!-- 語言選擇 -->
+    <string name="language_english">English</string>
+    <string name="language_tchinese">繁體中文</string>
+    <string name="language_schinese">简体中文</string>
+    <string name="first_run_language_title">選擇語言</string>
+    <string name="first_run_language_subtitle">請選擇您偏好的語言</string>
+
+    <!-- 國家名稱 -->
+    <string name="country_us">美國</string>
+    <string name="country_gb">英國</string>
+    <string name="country_de">德國</string>
+    <string name="country_jp">日本</string>
+    <string name="country_sg">新加坡</string>
+    <string name="country_au">澳大利亞</string>
+    <string name="country_ca">加拿大</string>
+    <string name="country_fr">法國</string>
+    <string name="country_nl">荷蘭</string>
+    <string name="country_hk">中國香港</string>
+    <string name="country_cn">中國</string>
+    <string name="country_kr">韓國</string>
+    <string name="country_tw">中國台灣</string>
+    <string name="country_in">印度</string>
+    <string name="country_br">巴西</string>
+    <string name="country_all">所有地點</string>
+</resources>

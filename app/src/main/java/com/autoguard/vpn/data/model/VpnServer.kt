@@ -106,10 +106,10 @@ data class VpnGateServer(
 
     fun getQualityDescription(): String {
         return when {
-            score >= 100000 -> "极佳"
-            score >= 50000 -> "良好"
-            score >= 10000 -> "普通"
-            else -> "一般"
+            score >= 100000 -> "Excellent"
+            score >= 50000 -> "Good"
+            score >= 10000 -> "Average"
+            else -> "Poor"
         }
     }
 

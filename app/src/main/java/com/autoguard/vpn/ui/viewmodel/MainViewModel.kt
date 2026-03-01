@@ -16,13 +16,12 @@ import com.autoguard.vpn.data.repository.VpnGateStats
 import com.autoguard.vpn.service.AutoGuardVpnService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-// DataStore Extension
-private val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "vpn_settings")
 
 /**
  * Main Interface ViewModel
@@ -83,9 +82,35 @@ class MainViewModel @Inject constructor(
     private val _killSwitchEnabled = MutableStateFlow(false)
     val killSwitchEnabled: StateFlow<Boolean> = _killSwitchEnabled.asStateFlow()
 
+    // Language and First Run
+    val appLanguage: StateFlow<String> = serverRepository.appLanguageFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = "en"
+    )
+
+    // First Run state, nullable to represent unknown initial state
+    val isFirstRun: StateFlow<Boolean?> = serverRepository.isFirstRunFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
+
     init {
         // Automatically fetch server list and test connectivity on startup
         fetchServers()
+    }
+
+    fun setLanguage(languageCode: String) {
+        viewModelScope.launch {
+            serverRepository.setAppLanguage(languageCode)
+        }
+    }
+
+    fun completeFirstRun() {
+        viewModelScope.launch {
+            serverRepository.setFirstRunCompleted()
+        }
     }
 
     /**

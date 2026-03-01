@@ -3,6 +3,7 @@ package com.autoguard.vpn.data.repository
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -27,6 +28,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -63,6 +65,8 @@ class ServerRepository @Inject constructor(
         private val CUSTOM_API_URL = stringPreferencesKey("custom_api_url")
         private val CACHED_SERVERS = stringPreferencesKey("cached_servers")
         private val CACHED_VPN_GATE_SERVERS = stringPreferencesKey("cached_vpn_gate_servers")
+        private val APP_LANGUAGE = stringPreferencesKey("app_language")
+        private val IS_FIRST_RUN = booleanPreferencesKey("is_first_run")
         private const val DEFAULT_API_URL = "https://api.autoguard-vpn.com/servers.json"
         // Connectivity test no longer depends only on Google, as it might be inaccessible before VPN connection
         private const val FALLBACK_TEST_URL = "https://www.bing.com"
@@ -75,6 +79,32 @@ class ServerRepository @Inject constructor(
 
     val customApiUrlFlow: Flow<String> = context.dataStore.data.map { preferences ->
         preferences[CUSTOM_API_URL] ?: DEFAULT_API_URL
+    }
+
+    val appLanguageFlow: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[APP_LANGUAGE] ?: "en"
+    }
+
+    val isFirstRunFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[IS_FIRST_RUN] ?: true
+    }
+
+    suspend fun setAppLanguage(languageCode: String) {
+        // Save to DataStore
+        context.dataStore.edit { preferences ->
+            preferences[APP_LANGUAGE] = languageCode
+        }
+        // Save to SharedPreferences for early access
+        context.getSharedPreferences("vpn_settings", Context.MODE_PRIVATE).edit().apply {
+            putString("app_language", languageCode)
+            commit() // Use commit to ensure it's written immediately
+        }
+    }
+
+    suspend fun setFirstRunCompleted() {
+        context.dataStore.edit { preferences ->
+            preferences[IS_FIRST_RUN] = false
+        }
     }
 
     suspend fun fetchServerList(): Result<List<VpnServer>> {

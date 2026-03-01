@@ -35,10 +35,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.autoguard.vpn.R
 import com.autoguard.vpn.data.model.VpnConnectionState
 import com.autoguard.vpn.ui.components.ConnectButton
 import com.autoguard.vpn.ui.components.ServerCard
@@ -76,7 +78,7 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "AutoGuard VPN",
+                        text = stringResource(R.string.app_name),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -96,7 +98,7 @@ fun HomeScreen(
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
-                                contentDescription = "Refresh Server List"
+                                contentDescription = stringResource(R.string.action_refresh)
                             )
                         }
                     }
@@ -105,7 +107,7 @@ fun HomeScreen(
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "Settings"
+                            contentDescription = stringResource(R.string.action_settings)
                         )
                     }
                 },
@@ -197,11 +199,11 @@ private fun ConnectionStatusSection(
     ) {
         // Status Text
         val statusText = when (connectionState) {
-            VpnConnectionState.CONNECTED -> "Connected"
-            VpnConnectionState.CONNECTING -> "Connecting..."
-            VpnConnectionState.DISCONNECTING -> "Disconnecting..."
-            VpnConnectionState.ERROR -> "Connection Failed"
-            VpnConnectionState.DISCONNECTED -> "Not Connected"
+            VpnConnectionState.CONNECTED -> stringResource(R.string.status_connected)
+            VpnConnectionState.CONNECTING -> stringResource(R.string.status_connecting)
+            VpnConnectionState.DISCONNECTING -> stringResource(R.string.status_disconnecting)
+            VpnConnectionState.ERROR -> stringResource(R.string.home_status_failed)
+            VpnConnectionState.DISCONNECTED -> stringResource(R.string.home_status_not_connected)
         }
 
         val statusColor = when (connectionState) {
@@ -231,13 +233,13 @@ private fun ConnectionStatusSection(
             )
         } else if (connectionState == VpnConnectionState.CONNECTING) {
             Text(
-                text = "Establishing secure connection...",
+                text = stringResource(R.string.home_info_connecting),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         } else {
             Text(
-                text = "Tap to connect VPN",
+                text = stringResource(R.string.home_info_tap_to_connect),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -262,9 +264,9 @@ private fun ServerSelectionSection(
         ServerCard(
             server = selectedServer ?: com.autoguard.vpn.data.model.VpnServer(
                 id = "default",
-                name = "Select Server",
+                name = stringResource(R.string.server_select_title),
                 country = "🌐",
-                city = "Select Server",
+                city = stringResource(R.string.server_select_title),
                 endpoint = "",
                 publicKey = "",
                 allowedIps = "0.0.0.0/0",
