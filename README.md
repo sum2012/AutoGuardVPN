@@ -113,7 +113,7 @@ The app also supports custom JSON server lists:
 
 ```json
 {
-  "version": "1.0.1",
+  "version": "1.0.0",
   "lastUpdated": "2024-01-24T00:00:00Z",
   "servers": [
     {

@@ -10,9 +10,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -35,10 +35,9 @@ import dagger.hilt.android.AndroidEntryPoint
 /**
  * Main Activity
  * Application entry point, responsible for UI initialization and navigation
- * Inherits from AppCompatActivity to support AppCompatDelegate locale management
  */
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     // VPN permission request Launcher
     private val vpnPermissionLauncher = registerForActivityResult(
