@@ -29,8 +29,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.autoguard.vpn.R
 import com.autoguard.vpn.data.model.VpnServer
 import com.autoguard.vpn.ui.theme.CardShape
 import com.autoguard.vpn.ui.theme.ConnectedGreen
@@ -137,13 +139,13 @@ fun ServerCard(
                             if (server.throughput != null) {
                                 Icon(
                                     imageVector = Icons.Default.Speed,
-                                    contentDescription = "Throughput",
+                                    contentDescription = stringResource(R.string.server_throughput),
                                     modifier = Modifier.size(12.dp),
                                     tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                                 )
                                 Spacer(modifier = Modifier.width(2.dp))
                                 Text(
-                                    text = "${String.format("%.1f", server.throughput)} Mbps",
+                                    text = "${String.format("%.1f", server.throughput)} ${stringResource(R.string.server_throughput_unit)}",
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -153,7 +155,7 @@ fun ServerCard(
                             if (server.vpnSessions != null) {
                                 Icon(
                                     imageVector = Icons.Default.Groups,
-                                    contentDescription = "Sessions",
+                                    contentDescription = stringResource(R.string.server_sessions),
                                     modifier = Modifier.size(12.dp),
                                     tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f)
                                 )
@@ -189,7 +191,7 @@ fun ServerCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.NetworkCheck,
-                            contentDescription = "Selected",
+                            contentDescription = stringResource(R.string.status_connected),
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
@@ -197,7 +199,7 @@ fun ServerCard(
                 } else {
                     Icon(
                         imageVector = Icons.Default.ChevronRight,
-                        contentDescription = "Select",
+                        contentDescription = stringResource(R.string.action_connect),
                         modifier = Modifier.size(24.dp),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
@@ -225,7 +227,7 @@ fun LatencyIndicator(
 
     val latencyText = when {
         pingLatency < 0 -> "-- ms"
-        pingLatency < 1000 -> "${pingLatency}ms"
+        pingLatency < 1000 -> stringResource(R.string.latency_ms, pingLatency.toInt())
         else -> "${pingLatency / 1000}s"
     }
 
@@ -235,7 +237,7 @@ fun LatencyIndicator(
     ) {
         Icon(
             imageVector = Icons.Default.Public,
-            contentDescription = "Latency",
+            contentDescription = stringResource(R.string.server_latency),
             modifier = Modifier.size(16.dp),
             tint = latencyColor
         )
@@ -281,7 +283,7 @@ fun CountryHeader(
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "$serverCount ${if (serverCount > 1) "Servers" else "Server"}",
+                text = stringResource(R.string.server_count, serverCount),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -303,24 +305,25 @@ private fun countryCodeToEmoji(code: String): String {
 /**
  * Get country name
  */
+@Composable
 private fun getCountryName(code: String): String {
     return when (code.uppercase()) {
-        "US" -> "United States"
-        "GB" -> "United Kingdom"
-        "DE" -> "Germany"
-        "JP" -> "Japan"
-        "SG" -> "Singapore"
-        "AU" -> "Australia"
-        "CA" -> "Canada"
-        "FR" -> "France"
-        "NL" -> "Netherlands"
-        "HK" -> "Hong Kong"
-        "CN" -> "China"
-        "KR" -> "South Korea"
-        "TW" -> "Taiwan"
-        "IN" -> "India"
-        "BR" -> "Brazil"
-        "🌐" -> "All Locations"
+        "US" -> stringResource(R.string.country_us)
+        "GB" -> stringResource(R.string.country_gb)
+        "DE" -> stringResource(R.string.country_de)
+        "JP" -> stringResource(R.string.country_jp)
+        "SG" -> stringResource(R.string.country_sg)
+        "AU" -> stringResource(R.string.country_au)
+        "CA" -> stringResource(R.string.country_ca)
+        "FR" -> stringResource(R.string.country_fr)
+        "NL" -> stringResource(R.string.country_nl)
+        "HK" -> stringResource(R.string.country_hk)
+        "CN" -> stringResource(R.string.country_cn)
+        "KR" -> stringResource(R.string.country_kr)
+        "TW" -> stringResource(R.string.country_tw)
+        "IN" -> stringResource(R.string.country_in)
+        "BR" -> stringResource(R.string.country_br)
+        "🌐" -> stringResource(R.string.country_all)
         else -> code
     }
 }

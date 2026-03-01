@@ -48,8 +48,8 @@ internal class LCPClient(bridge: SharedBridge) : ConfigClient<LCPConfigureFrame>
         val nak = LCPOptionPack()
 
         val serverMru = request.options.mruOption?.unitSize ?: DEFAULT_MRU
-        if (serverMru < bridge.PPP_MTU) {
-            nak.mruOption = MRUOption().also { it.unitSize = bridge.PPP_MTU }
+        if (serverMru < bridge.pppMtu) {
+            nak.mruOption = MRUOption().also { it.unitSize = bridge.pppMtu }
         }
 
 
@@ -135,7 +135,7 @@ internal class LCPClient(bridge: SharedBridge) : ConfigClient<LCPConfigureFrame>
 
     override suspend fun tryAcceptClientNak(nak: LCPConfigureFrame) {
         nak.options.mruOption?.also {
-            bridge.currentMRU = max(min(it.unitSize, bridge.PPP_MRU), MIN_MRU)
+            bridge.currentMRU = max(min(it.unitSize, bridge.pppMru), MIN_MRU)
         }
     }
 
@@ -143,7 +143,7 @@ internal class LCPClient(bridge: SharedBridge) : ConfigClient<LCPConfigureFrame>
         reject.options.mruOption?.also {
             isMruRejected = true
 
-            if (DEFAULT_MRU > bridge.PPP_MRU) {
+            if (DEFAULT_MRU > bridge.pppMru) {
                 bridge.controlMailbox.send(
                     ControlMessage(Where.LCP_MRU, Result.ERR_OPTION_REJECTED)
                 )

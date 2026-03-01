@@ -1,5 +1,6 @@
 package kittoku.osc
 
+import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import kittoku.osc.preference.AppString
 import kittoku.osc.preference.OscPrefKey
@@ -85,7 +86,7 @@ enum class Result {
 }
 
 internal class SharedBridge(val service: SstpVpnService) {
-    val prefs = PreferenceManager.getDefaultSharedPreferences(service)
+    val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(service)
     val builder = service.Builder()
     lateinit var handler: CoroutineExceptionHandler
 
@@ -94,13 +95,13 @@ internal class SharedBridge(val service: SstpVpnService) {
     var sslTerminal: SSLTerminal? = null
     var ipTerminal: IPTerminal? = null
 
-    val HOME_USERNAME = getStringPrefValue(OscPrefKey.HOME_USERNAME, prefs)
-    val HOME_PASSWORD = getStringPrefValue(OscPrefKey.HOME_PASSWORD, prefs)
-    val PPP_MRU = getIntPrefValue(OscPrefKey.PPP_MRU, prefs)
-    val PPP_MTU = getIntPrefValue(OscPrefKey.PPP_MTU, prefs)
-    val PPP_AUTH_PROTOCOLS = getSetPrefValue(OscPrefKey.PPP_AUTH_PROTOCOLS, prefs)
-    val PPP_IPv4_ENABLED = getBooleanPrefValue(OscPrefKey.PPP_IPv4_ENABLED, prefs)
-    val PPP_IPv6_ENABLED = getBooleanPrefValue(OscPrefKey.PPP_IPv6_ENABLED, prefs)
+    val homeUsername = getStringPrefValue(OscPrefKey.HOME_USERNAME, prefs)
+    val homePassword = getStringPrefValue(OscPrefKey.HOME_PASSWORD, prefs)
+    val pppMru = getIntPrefValue(OscPrefKey.PPP_MRU, prefs)
+    val pppMtu = getIntPrefValue(OscPrefKey.PPP_MTU, prefs)
+    val pppAuthProtocols = getSetPrefValue(OscPrefKey.PPP_AUTH_PROTOCOLS, prefs)
+    val pppIpv4Enabled = getBooleanPrefValue(OscPrefKey.PPP_IPv4_ENABLED, prefs)
+    val pppIpv6Enabled = getBooleanPrefValue(OscPrefKey.PPP_IPv6_ENABLED, prefs)
 
     var hlak: ByteArray? = null
     val nonce = ByteArray(32)
@@ -110,7 +111,7 @@ internal class SharedBridge(val service: SstpVpnService) {
     private val mutex = Mutex()
     private var frameID = -1
 
-    var currentMRU = PPP_MRU
+    var currentMRU = pppMru
     var currentAuth = ""
     val currentIPv4 = ByteArray(4)
     val currentIPv6 = ByteArray(8)
@@ -130,7 +131,7 @@ internal class SharedBridge(val service: SstpVpnService) {
     }
 
     fun isEnabled(authProtocol: String): Boolean {
-        return authProtocol in PPP_AUTH_PROTOCOLS
+        return authProtocol in pppAuthProtocols
     }
 
     fun attachSSLTerminal() {

@@ -49,8 +49,8 @@ internal class PAPClient(private val bridge: SharedBridge) {
     private suspend fun sendPAPRequest(id: Byte) {
         PAPAuthenticateRequest().also {
             it.id = id
-            it.idFiled = bridge.HOME_USERNAME.toByteArray(Charsets.US_ASCII)
-            it.passwordFiled = bridge.HOME_PASSWORD.toByteArray(Charsets.US_ASCII)
+            it.idFiled = bridge.homeUsername.toByteArray(Charsets.US_ASCII)
+            it.passwordFiled = bridge.homePassword.toByteArray(Charsets.US_ASCII)
 
             bridge.sslTerminal!!.send(it.toByteBuffer())
         }

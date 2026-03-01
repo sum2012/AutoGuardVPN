@@ -3,12 +3,8 @@ package com.autoguard.vpn.ui.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,15 +16,12 @@ import com.autoguard.vpn.data.repository.VpnGateStats
 import com.autoguard.vpn.service.AutoGuardVpnService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.Locale
 import javax.inject.Inject
-
-// DataStore Extension
-private val Context.settingsDataStore: DataStore<Preferences> by preferencesDataStore(name = "vpn_settings")
 
 /**
  * Main Interface ViewModel
@@ -40,12 +33,6 @@ class MainViewModel @Inject constructor(
     application: Application,
     private val serverRepository: ServerRepository
 ) : AndroidViewModel(application) {
-
-    companion object {
-        val LANGUAGE_KEY = stringPreferencesKey("language")
-    }
-
-    private val context = application.applicationContext
 
     // VPN Connection State
     val connectionState: StateFlow<VpnConnectionState> = AutoGuardVpnService.connectionState
@@ -95,41 +82,35 @@ class MainViewModel @Inject constructor(
     private val _killSwitchEnabled = MutableStateFlow(false)
     val killSwitchEnabled: StateFlow<Boolean> = _killSwitchEnabled.asStateFlow()
 
-    // Language State
-    val language = context.settingsDataStore.data.map { preferences ->
-        preferences[LANGUAGE_KEY] ?: ""
-    }
+    // Language and First Run
+    val appLanguage: StateFlow<String> = serverRepository.appLanguageFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = "en"
+    )
+
+    // First Run state, nullable to represent unknown initial state
+    val isFirstRun: StateFlow<Boolean?> = serverRepository.isFirstRunFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
 
     init {
         // Automatically fetch server list and test connectivity on startup
         fetchServers()
-        
-        // Apply saved language
-        viewModelScope.launch {
-            context.settingsDataStore.data.collect { preferences ->
-                val lang = preferences[LANGUAGE_KEY]
-                if (!lang.isNullOrEmpty()) {
-                    applyLanguage(lang)
-                }
-            }
-        }
     }
 
-    /**
-     * Set App Language
-     */
     fun setLanguage(languageCode: String) {
         viewModelScope.launch {
-            context.settingsDataStore.edit { preferences ->
-                preferences[LANGUAGE_KEY] = languageCode
-            }
-            applyLanguage(languageCode)
+            serverRepository.setAppLanguage(languageCode)
         }
     }
 
-    private fun applyLanguage(languageCode: String) {
-        val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(languageCode)
-        AppCompatDelegate.setApplicationLocales(appLocale)
+    fun completeFirstRun() {
+        viewModelScope.launch {
+            serverRepository.setFirstRunCompleted()
+        }
     }
 
     /**

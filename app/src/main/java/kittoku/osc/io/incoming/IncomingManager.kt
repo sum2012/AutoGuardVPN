@@ -168,12 +168,12 @@ internal class IncomingManager(internal val bridge: SharedBridge) {
 
                         // DATA
                         if (protocol == PPP_PROTOCOL_IP) {
-                            processIPPacket(bridge.PPP_IPv4_ENABLED, size, buffer)
+                            processIPPacket(bridge.pppIpv4Enabled, size, buffer)
                             continue
                         }
 
                         if (protocol == PPP_PROTOCOL_IPv6) {
-                            processIPPacket(bridge.PPP_IPv6_ENABLED, size, buffer)
+                            processIPPacket(bridge.pppIpv6Enabled, size, buffer)
                             continue
                         }
                         

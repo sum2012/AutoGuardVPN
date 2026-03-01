@@ -162,7 +162,7 @@ internal class Controller(val bridge: SharedBridge) {
             sstpClient!!.sendCallConnected()
 
 
-            if (bridge.PPP_IPv4_ENABLED) {
+            if (bridge.pppIpv4Enabled) {
                 IpcpClient(bridge).also {
                     incomingManager!!.registerMailbox(it)
                     it.launchJobNegotiation()
@@ -176,7 +176,7 @@ internal class Controller(val bridge: SharedBridge) {
             }
 
 
-            if (bridge.PPP_IPv6_ENABLED) {
+            if (bridge.pppIpv6Enabled) {
                 Ipv6cpClient(bridge).also {
                     incomingManager!!.registerMailbox(it)
                     it.launchJobNegotiation()

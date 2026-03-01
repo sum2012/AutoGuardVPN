@@ -113,8 +113,8 @@ The app also supports custom JSON server lists:
 
 ```json
 {
-  "version": "1.0.1",
-  "lastUpdated": "2024-02-13T00:00:00Z",
+  "version": "1.0.2",
+  "lastUpdated": "2024-03-01T00:00:00Z",
   "servers": [
     {
       "id": "us-east-1",

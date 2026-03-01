@@ -28,7 +28,7 @@ internal class IPTerminal(private val bridge: SharedBridge) {
     private val isCustomRoutesAdded = getBooleanPrefValue(OscPrefKey.ROUTE_DO_ADD_CUSTOM_ROUTES, bridge.prefs)
 
     internal suspend fun initialize() {
-        if (bridge.PPP_IPv4_ENABLED) {
+        if (bridge.pppIpv4Enabled) {
             if (bridge.currentIPv4.contentEquals(ByteArray(4))) {
                 bridge.controlMailbox.send(ControlMessage(Where.IPv4, Result.ERR_INVALID_ADDRESS))
                 return
@@ -51,7 +51,7 @@ internal class IPTerminal(private val bridge: SharedBridge) {
             setIPv4BasedRouting()
         }
 
-        if (bridge.PPP_IPv6_ENABLED) {
+        if (bridge.pppIpv6Enabled) {
             if (bridge.currentIPv6.contentEquals(ByteArray(8))) {
                 bridge.controlMailbox.send(ControlMessage(Where.IPv6, Result.ERR_INVALID_ADDRESS))
                 return
@@ -75,7 +75,7 @@ internal class IPTerminal(private val bridge: SharedBridge) {
             addAppBasedRules()
         }
 
-        bridge.builder.setMtu(bridge.PPP_MTU)
+        bridge.builder.setMtu(bridge.pppMtu)
         bridge.builder.setBlocking(true)
 
         fd = bridge.builder.establish()!!.also {
@@ -148,7 +148,7 @@ internal class IPTerminal(private val bridge: SharedBridge) {
 
     internal fun readPacket(buffer: ByteBuffer) {
         buffer.clear()
-        buffer.position(inputStream?.read(buffer.array(), 0, bridge.PPP_MTU) ?: buffer.position())
+        buffer.position(inputStream?.read(buffer.array(), 0, bridge.pppMtu) ?: buffer.position())
         buffer.flip()
     }
 

@@ -13,29 +13,39 @@ import android.provider.Settings
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.core.os.LocaleListCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.autoguard.vpn.ui.screens.HomeScreen
+import com.autoguard.vpn.ui.screens.LanguageSelectionScreen
 import com.autoguard.vpn.ui.screens.ServerListScreen
 import com.autoguard.vpn.ui.screens.SettingsScreen
 import com.autoguard.vpn.ui.theme.AutoGuardVPNTheme
 import com.autoguard.vpn.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 /**
  * Main Activity
  * Application entry point, responsible for UI initialization and navigation
- * Inherits from AppCompatActivity to support AppCompatDelegate locale management
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -62,6 +72,23 @@ class MainActivity : AppCompatActivity() {
         checkAndRequestPermissions()
 
         setContent {
+            val viewModel: MainViewModel = hiltViewModel()
+            val appLanguage by viewModel.appLanguage.collectAsState()
+            val isFirstRun by viewModel.isFirstRun.collectAsState()
+
+            // Handle language change using AppCompatDelegate
+            LaunchedEffect(appLanguage) {
+                val localeTag = when (appLanguage) {
+                    "zh-rTW" -> "zh-Hant-TW"
+                    "zh-rCN" -> "zh-Hans-CN"
+                    else -> "en"
+                }
+                val currentLocales = AppCompatDelegate.getApplicationLocales()
+                if (currentLocales.toLanguageTags() != localeTag) {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(localeTag))
+                }
+            }
+
             val windowSizeClass = calculateWindowSizeClass(this)
 
             AutoGuardVPNTheme {
@@ -69,49 +96,68 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    val viewModel: MainViewModel = hiltViewModel()
-
-                    // Navigation Host
-                    NavHost(
-                        navController = navController,
-                        startDestination = "home"
-                    ) {
-                        // Home Screen
-                        composable("home") {
-                            HomeScreen(
-                                viewModel = viewModel,
-                                onNavigateToSettings = {
-                                    navController.navigate("settings")
-                                },
-                                onNavigateToServerList = {
-                                    navController.navigate("server_list")
-                                }
-                            )
+                    // Wait for isFirstRun to be loaded to avoid NavHost startDestination issues
+                    if (isFirstRun == null) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
                         }
+                    } else {
+                        val navController = rememberNavController()
 
-                        // Server List Screen
-                        composable("server_list") {
-                            ServerListScreen(
-                                viewModel = viewModel,
-                                onDismiss = {
-                                    navController.popBackStack()
-                                },
-                                onServerSelected = { server ->
-                                    viewModel.selectServer(server)
-                                    navController.popBackStack()
-                                }
-                            )
-                        }
+                        // Navigation Host
+                        NavHost(
+                            navController = navController,
+                            startDestination = if (isFirstRun == true) "language_select" else "home"
+                        ) {
+                            // Language Selection Screen (First Run)
+                            composable("language_select") {
+                                LanguageSelectionScreen(
+                                    viewModel = viewModel,
+                                    onLanguageSelected = {
+                                        viewModel.completeFirstRun()
+                                        navController.navigate("home") {
+                                            popUpTo("language_select") { inclusive = true }
+                                        }
+                                    }
+                                )
+                            }
 
-                        // Settings Screen
-                        composable("settings") {
-                            SettingsScreen(
-                                viewModel = viewModel,
-                                onNavigateBack = {
-                                    navController.popBackStack()
-                                }
-                            )
+                            // Home Screen
+                            composable("home") {
+                                HomeScreen(
+                                    viewModel = viewModel,
+                                    onNavigateToSettings = {
+                                        navController.navigate("settings")
+                                    },
+                                    onNavigateToServerList = {
+                                        navController.navigate("server_list")
+                                    }
+                                )
+                            }
+
+                            // Server List Screen
+                            composable("server_list") {
+                                ServerListScreen(
+                                    viewModel = viewModel,
+                                    onDismiss = {
+                                        navController.popBackStack()
+                                    },
+                                    onServerSelected = { server ->
+                                        viewModel.selectServer(server)
+                                        navController.popBackStack()
+                                    }
+                                )
+                            }
+
+                            // Settings Screen
+                            composable("settings") {
+                                SettingsScreen(
+                                    viewModel = viewModel,
+                                    onNavigateBack = {
+                                        navController.popBackStack()
+                                    }
+                                )
+                            }
                         }
                     }
                 }
