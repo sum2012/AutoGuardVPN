@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 /**
- * VPN服务器数据模型
- * 增加协议、配置以及凭据支持
+ * VPN Server Data Model
+ * Added support for protocol, configuration, and credentials
  */
 @Parcelize
 data class VpnServer(

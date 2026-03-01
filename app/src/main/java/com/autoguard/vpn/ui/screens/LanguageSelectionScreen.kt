@@ -87,7 +87,7 @@ fun LanguageSelectionScreen(
             shape = MaterialTheme.shapes.medium
         ) {
             Text(
-                text = stringResource(R.string.action_connect),
+                text = stringResource(R.string.action_confirm),
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }

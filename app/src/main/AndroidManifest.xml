@@ -2,17 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 网络相关权限 -->
+    <!-- Network-related permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <!-- 前台服务权限（Android 14+需要） -->
+    <!-- Foreground service permissions (Required for Android 14+) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- VPN权限声明 -->
+    <!-- VPN feature declarations -->
     <uses-feature
         android:name="android.software.leanback"
         android:required="false" />
@@ -34,7 +34,7 @@
         android:theme="@style/Theme.AutoGuardVPN"
         tools:targetApi="34">
 
-        <!-- 主Activity -->
+        <!-- Main Activity -->
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
@@ -51,7 +51,7 @@
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- VPN服务声明 -->
+        <!-- VPN Service declaration -->
         <service
             android:name=".service.AutoGuardVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
@@ -68,7 +68,7 @@
                 android:value="VPN" />
         </service>
 
-        <!-- SSTP VPN服务 -->
+        <!-- SSTP VPN Service -->
         <service
             android:name="kittoku.osc.service.SstpVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"

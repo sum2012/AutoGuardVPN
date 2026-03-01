@@ -28,7 +28,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.InetSocketAddress
 import java.net.Socket
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -41,10 +40,10 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
  */
 @Singleton
 class ServerRepository @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val apiService: ServerApiService,
     private val vpnGateApiService: VpnGateApiService,
-    @DefaultClient private val okHttpClient: OkHttpClient
+    @param:DefaultClient private val okHttpClient: OkHttpClient
 ) {
     private val _serverList = MutableStateFlow<List<VpnServer>>(emptyList())
     val serverList: StateFlow<List<VpnServer>> = _serverList.asStateFlow()
@@ -225,12 +224,6 @@ class ServerRepository @Inject constructor(
         }
     }
 
-    suspend fun setCustomApiUrl(url: String) {
-        context.dataStore.edit { preferences ->
-            preferences[CUSTOM_API_URL] = url
-        }
-    }
-
     private suspend fun cacheVpnGateServers(servers: List<VpnGateServer>) {
         try {
             val json = GsonHelper.toJson(servers)
@@ -258,10 +251,6 @@ class ServerRepository @Inject constructor(
         } catch (_: Exception) {}
     }
 
-    fun getServerById(serverId: String): VpnServer? {
-        return _serverList.value.find { it.id == serverId }
-    }
-
     fun getVpnGateServerByIp(ipAddress: String): VpnGateServer? {
         return _vpnGateServers.value.find { it.ipAddress == ipAddress }
     }
@@ -279,14 +268,6 @@ class ServerRepository @Inject constructor(
 
     fun getCountries(): List<String> {
         return _serverList.value.map { it.country }.distinct().sorted()
-    }
-
-    fun getServersGroupedByCountry(): Map<String, List<VpnServer>> {
-        return _serverList.value.groupBy { it.country }
-    }
-
-    fun getVpnGateServersGroupedByCountry(): Map<String, List<VpnGateServer>> {
-        return VpnGateCsvParser.groupByCountry(_vpnGateServers.value)
     }
 
     fun getVpnGateStats(): VpnGateStats {

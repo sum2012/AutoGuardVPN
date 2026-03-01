@@ -1,7 +1,6 @@
 package com.autoguard.vpn.ui.screens
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -19,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.autoguard.vpn.R
 import com.autoguard.vpn.ui.viewmodel.MainViewModel
 
@@ -40,7 +40,7 @@ fun SettingsScreen(
     val appLanguage by viewModel.appLanguage.collectAsState()
     val context = LocalContext.current
     
-    var showLanguageDialog by remember { mutableStateOf(false) }
+    val showLanguageDialog = remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -84,7 +84,7 @@ fun SettingsScreen(
                     "zh-rCN" -> stringResource(R.string.language_schinese)
                     else -> stringResource(R.string.language_english)
                 },
-                onClick = { showLanguageDialog = true }
+                onClick = { showLanguageDialog.value = true }
             )
 
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
@@ -102,7 +102,7 @@ fun SettingsScreen(
 
             SettingsInfoItem(
                 title = stringResource(R.string.settings_version),
-                value = "1.0.0"
+                value = "1.0.2"
             )
 
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
@@ -111,20 +111,20 @@ fun SettingsScreen(
                 title = "Source",
                 value = "GitHub",
                 onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/sum2012/AutoGuardVPN"))
+                    val intent = Intent(Intent.ACTION_VIEW, "https://github.com/sum2012/AutoGuardVPN".toUri())
                     context.startActivity(intent)
                 }
             )
         }
     }
 
-    if (showLanguageDialog) {
+    if (showLanguageDialog.value) {
         LanguageDialog(
             currentLanguage = appLanguage,
-            onDismiss = { showLanguageDialog = false },
+            onDismiss = { showLanguageDialog.value = false },
             onLanguageSelected = { 
                 viewModel.setLanguage(it)
-                showLanguageDialog = false
+                showLanguageDialog.value = false
             }
         )
     }

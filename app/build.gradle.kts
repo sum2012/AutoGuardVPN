@@ -58,12 +58,12 @@ android {
 }
 
 dependencies {
-    // 核心Android依赖
+    // Core Android dependencies
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.8.0")
 
-    // Jetpack Compose UI框架
+    // Jetpack Compose UI framework
     implementation(platform("androidx.compose:compose-bom:2024.05.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -72,40 +72,40 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.material3:material3-window-size-class")
 
-    // 依赖注入 - Hilt
+    // Dependency Injection - Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    // 网络请求 - Retrofit + OkHttp
+    // Network requests - Retrofit + OkHttp
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // JSON解析 - Gson
+    // JSON parsing - Gson
     implementation("com.google.code.gson:gson:2.10.1")
 
-    // 数据存储 - DataStore
+    // Data storage - DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
-    // 生命周期管理
+    // Lifecycle management
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.0")
 
-    // 协程
+    // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
-    // 图像加载 - Coil
+    // Image loading - Coil
     implementation("io.coil-kt:coil-compose:2.6.0")
 
-    // SSTP VPN支持 - Preference and AppCompat
+    // SSTP VPN support - Preference and AppCompat
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.documentfile:documentfile:1.0.1")
 
-    // 测试依赖
+    // Test dependencies
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
     testImplementation("io.mockk:mockk:1.13.11")

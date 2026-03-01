@@ -67,7 +67,7 @@ internal abstract class EAPClient(protected val bridge: SharedBridge) {
         EAPResponse().also {
             it.id = serverIdentity.id
             it.type = EAP_TYPE_IDENTITY
-            it.typeData = bridge.HOME_USERNAME.toByteArray(Charsets.US_ASCII)
+            it.typeData = bridge.homeUsername.toByteArray(Charsets.US_ASCII)
 
             bridge.sslTerminal!!.send(it.toByteBuffer())
         }

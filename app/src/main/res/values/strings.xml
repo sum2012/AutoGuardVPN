@@ -18,6 +18,7 @@
 
     <!-- Action Buttons -->
     <string name="action_connect">Connect</string>
+    <string name="action_confirm">Confirm</string>
     <string name="action_disconnect">Disconnect</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_retry">Retry</string>

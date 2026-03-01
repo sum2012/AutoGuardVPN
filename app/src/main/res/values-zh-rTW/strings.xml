@@ -18,6 +18,7 @@
 
     <!-- 操作按鈕 -->
     <string name="action_connect">連線</string>
+    <string name="action_confirm">確認</string>
     <string name="action_disconnect">斷開連線</string>
     <string name="action_cancel">取消</string>
     <string name="action_retry">重試</string>

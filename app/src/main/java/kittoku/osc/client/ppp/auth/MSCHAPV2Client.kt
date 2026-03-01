@@ -26,7 +26,7 @@ internal class MSCHAPV2Client(private val bridge: SharedBridge) {
         prepareClientResponse()
 
         return ChapValueNameFiled().also {
-            it.name = bridge.HOME_USERNAME.toByteArray(Charsets.US_ASCII)
+            it.name = bridge.homeUsername.toByteArray(Charsets.US_ASCII)
             it.value = ByteArray(49)
             clientChallenge.copyInto(it.value)
             clientResponse.copyInto(it.value, destinationOffset = 24)
@@ -76,8 +76,8 @@ internal class MSCHAPV2Client(private val bridge: SharedBridge) {
     private fun prepareClientResponse() {
         SecureRandom().nextBytes(clientChallenge)
 
-        val userArray = bridge.HOME_USERNAME.toByteArray(Charsets.US_ASCII)
-        val passArray = bridge.HOME_PASSWORD.toByteArray(Charsets.UTF_16LE)
+        val userArray = bridge.homeUsername.toByteArray(Charsets.US_ASCII)
+        val passArray = bridge.homePassword.toByteArray(Charsets.UTF_16LE)
 
         val challenge = MessageDigest.getInstance("SHA-1").let {
             it.update(clientChallenge)
@@ -105,8 +105,8 @@ internal class MSCHAPV2Client(private val bridge: SharedBridge) {
     }
 
     private fun checkServerResponse(): Boolean {
-        val userArray = bridge.HOME_USERNAME.toByteArray(Charsets.US_ASCII)
-        val passArray = bridge.HOME_PASSWORD.toByteArray(Charsets.UTF_16LE)
+        val userArray = bridge.homeUsername.toByteArray(Charsets.US_ASCII)
+        val passArray = bridge.homePassword.toByteArray(Charsets.UTF_16LE)
 
         val magic1 = sum(
             "4D616769632073657276657220746F20",
@@ -146,7 +146,7 @@ internal class MSCHAPV2Client(private val bridge: SharedBridge) {
     }
 
     internal fun prepareHlak() {
-        val passArray = bridge.HOME_PASSWORD.toByteArray(Charsets.UTF_16LE)
+        val passArray = bridge.homePassword.toByteArray(Charsets.UTF_16LE)
 
         val magic1 = sum(
             "5468697320697320746865204D505045",

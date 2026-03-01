@@ -1,11 +1,7 @@
 package com.autoguard.vpn.ui.screens
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -44,14 +39,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Velocity
@@ -118,7 +109,7 @@ fun ServerListScreen(
                 navigationIcon = {
                     IconButton(onClick = onDismiss) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.action_back)
                         )
                     }
@@ -218,11 +209,11 @@ private fun ServerListContent(
     selectedServerId: String?,
     onServerClick: (VpnServer) -> Unit
 ) {
-    // 透過 NestedScrollConnection 強力攔截所有傳向父層的滾動事件
+    // Intercept all scroll events directed towards the parent through NestedScrollConnection
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                // 這裡可以選擇不處理 pre-scroll，讓列表本身先滑動
+                // We can choose not to handle pre-scroll here, allowing the list itself to scroll first
                 return Offset.Zero
             }
 
@@ -231,8 +222,8 @@ private fun ServerListContent(
                 available: Offset,
                 source: NestedScrollSource
             ): Offset {
-                // 當列表已經滾動到盡頭（頂部或底部），將剩餘的 available 偏移量全部消耗掉。
-                // 這樣父組件就收不到任何滑動量，無法觸發過度滾動或彈回效果。
+                // When the list has reached its limit (top or bottom), consume all remaining available offset.
+                // This prevents the parent component from receiving any scroll amount, thus avoiding overscroll or bounce effects.
                 return available
             }
 
@@ -241,20 +232,20 @@ private fun ServerListContent(
             }
 
             override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-                // 同樣消耗掉慣性滑動的剩餘速度
+                // Similarly, consume the remaining velocity of inertial scrolling
                 return available
             }
         }
     }
 
-    // 禁用 Compose 內建的 Overscroll 視覺效果
+    // Disable Compose's built-in Overscroll visual effect
     CompositionLocalProvider(
         LocalOverscrollConfiguration provides null
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                // 注入 NestedScrollConnection
+                // Inject NestedScrollConnection
                 .nestedScroll(nestedScrollConnection),
             contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)

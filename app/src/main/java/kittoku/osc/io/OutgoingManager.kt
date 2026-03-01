@@ -32,7 +32,7 @@ internal class OutgoingManager(private val bridge: SharedBridge) {
         jobMain = bridge.service.scope.launch(bridge.handler) {
             launchJobRetrieve()
 
-            val minCapacity = PREFIX_SIZE + bridge.PPP_MTU
+            val minCapacity = PREFIX_SIZE + bridge.pppMtu
 
             while (isActive) {
                 mainBuffer.clear()
@@ -55,8 +55,8 @@ internal class OutgoingManager(private val bridge: SharedBridge) {
 
     private fun launchJobRetrieve() {
         jobRetrieve = bridge.service.scope.launch(bridge.handler) {
-            val bufferAlpha = ByteBuffer.allocate(bridge.PPP_MTU)
-            val bufferBeta = ByteBuffer.allocate(bridge.PPP_MTU)
+            val bufferAlpha = ByteBuffer.allocate(bridge.pppMtu)
+            val bufferBeta = ByteBuffer.allocate(bridge.pppMtu)
             var isBlockingAlpha = true
 
             while (isActive) {
@@ -77,13 +77,13 @@ internal class OutgoingManager(private val bridge: SharedBridge) {
         val header = packet.getInt(0)
         val protocol = when (header and IP_VERSION_MASK) {
             IPv4_VERSION_HEADER -> {
-                if (!bridge.PPP_IPv4_ENABLED) return false
+                if (!bridge.pppIpv4Enabled) return false
 
                 PPP_PROTOCOL_IP
             }
 
             IPv6_VERSION_HEADER -> {
-                if (!bridge.PPP_IPv6_ENABLED) return false
+                if (!bridge.pppIpv6Enabled) return false
 
                 PPP_PROTOCOL_IPv6
             }
