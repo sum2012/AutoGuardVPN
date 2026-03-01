@@ -199,7 +199,7 @@ The application requires the following permissions:
 - [VPN Gate](https://www.vpngate.net/) - Provides the free VPN server list API
 - [WireGuard](https://www.wireguard.com/) - High-performance VPN protocol
 - [OpenVPN](https://openvpn.net/) - Open-source VPN solution
-- [Open SSTP Client](https://github.com/Kitsunemimi/Open-SSTP-Client) - Open-source SSTP VPN client for Android
+- [Open SSTP Client](https://github.com/kittoku/Open-SSTP-Client) - Open-source SSTP VPN client for Android
 
 ## License
 
